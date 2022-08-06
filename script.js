@@ -1,3 +1,11 @@
+let score = document.querySelector("#score")
+let step = document.querySelector("#step")
+let buttons = document.querySelector('#btns')
+let finalResult = document.querySelector('#finalResult')
+let resetBtn = document.querySelector('#reset')
+
+buttons.addEventListener('click', (e) => playRound(e.target.className, getComputerChoice()))
+
 function getComputerChoice() {
    let arr = ['rock', 'paper', 'scissors']
 
@@ -9,82 +17,101 @@ function getComputerChoice() {
    return res
 }
 
+let result = [];
+
 function playRound(playerSelection, computerSelection) {
-   if (playerSelection == null) {
-      return
-   }
+
+   let winAmount
+   let loseAmount
    let humanStep = playerSelection.toLowerCase();
    let robotStep = computerSelection
 
    if (humanStep === 'rock' && robotStep === 'paper') {
-      return "Lose"
+      step.innerHTML = `You lost! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      result.push('lose')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+
    } else if (humanStep === 'rock' && robotStep === 'scissors') {
-      return "Win"
+      step.innerHTML = `You won! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      result.push('win')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+
    } else if (humanStep === 'paper' && robotStep === 'rock') {
-      return "Win"
+      step.innerHTML = `You won! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      result.push('win')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+
    } else if (humanStep === 'paper' && robotStep === 'scissors') {
-      return "Lose"
+      step.innerHTML = `You lost! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      result.push('lose')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+
    } else if (humanStep === 'scissors' && robotStep === 'rock') {
-      return "Lose"
+      step.innerHTML = `You lost! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      result.push('lose')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+
    } else if (humanStep === 'scissors' && robotStep === 'paper') {
-      return "Win"
+      step.innerHTML = `You won! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      result.push('win')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+
    } else if (humanStep === robotStep) {
-      return `Draw`
-   } else if (humanStep !== 'rock' && humanStep !== 'paper' && humanStep !== 'scissors' || humanStep == 'null') {
-      return `You wrote invalid value, try again`
+      step.innerHTML = `Draw! You and Computer chose: ${humanStep}`
+      result.push('win', 'lose')
+      console.log(result)
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+   }
+
+   if (winAmount === 5) {
+      finalResult.innerHTML = `GAME OVER! You won with a score ${winAmount}:${loseAmount}`
+      let arr = Array.from(buttons.children)
+      arr.forEach(b => b.disabled = true)
+      resetBtn.classList.toggle("reset")
+
+   } else if (loseAmount === 5) {
+      finalResult.innerHTML = `GAME OVER! You lost with a score ${winAmount}:${loseAmount}`
+      let arr = Array.from(buttons.children)
+      arr.forEach(b => b.disabled = true)
+      resetBtn.classList.toggle("reset")
+   } else if (winAmount === 5 && loseAmount === 5) {
+      finalResult.innerHTML = `GAME OVER! DRAW ${loseAmount}:${winAmount}`
+      let arr = Array.from(buttons.children)
+      arr.forEach(b => b.disabled = true)
+      resetBtn.classList.toggle("reset")
    }
 }
 
-function game(n) {
-   for (let i = 0; i < n; i++) {
-      let playerSelection = prompt('Chose rock, paper or scissors ...');
+resetBtn.addEventListener('click', startNewGame)
+function startNewGame() {
+   result = []
+   winAmount = result.filter(r => r === "win").length
+   loseAmount = result.filter(r => r === "lose").length
+   resetBtn.classList.toggle("reset")
+   finalResult.innerHTML = ''
+   step.innerHTML = ''
+   score.innerHTML = ''
+   let arr = Array.from(buttons.children)
+   arr.forEach(b => b.disabled = false)
 
-      if (playerSelection == undefined) {
-         return
-      }
-
-      let computerSelection = getComputerChoice()
-
-      result.push(playRound(playerSelection, computerSelection))
-
-      console.log(`${playRound(playerSelection, computerSelection)}: your choice: ${playerSelection}, robots choice: ${computerSelection} `)
-
-   }
-
-   // utility log
-   console.log('array of round results ', result)
-
-   let winArr = []
-   let loseArr = []
-   let winStr = 'Win'
-   let loseStr = 'Lose'
-   let idx = result.indexOf(winStr)
-   let idx2 = result.indexOf(loseStr)
-   while (idx != -1) {
-      winArr.push(idx)
-      idx = result.indexOf(winStr, idx + 1);
-   }
-   while (idx2 != -1) {
-      loseArr.push(idx2)
-      idx2 = result.indexOf(loseStr, idx2 + 1);
-   }
-   // utility log
-   console.log('winArray ', winArr, ' number of wins ', winArr.length)
-
-   // utility log
-   console.log('loseArray ', loseArr, ' number of losses ', loseArr.length)
-
-   if (winArr.length > loseArr.length) {
-      console.log(`Congratulations, you won with a score ${winArr.length}:${loseArr.length}`)
-   } else if (winArr.length < loseArr.length) {
-      console.log(`Sorry, but you lost with a score ${winArr.length}:${loseArr.length}`)
-   } else if (winArr.length === loseArr.length) {
-      console.log(`Draw ${result.length - winArr.length}:${result.length - loseArr.length}`)
-   }
 }
-
-let result = [];
-
-let amountOfRounds = prompt('Enter the number of rounds you would like to play... ')
-
-game(amountOfRounds)
