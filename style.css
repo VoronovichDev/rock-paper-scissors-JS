@@ -4,7 +4,7 @@ body {
    height: 100vh;
    margin: 0;
    padding: 0;
-   background: url('/img/bg.jpg');
+   background: url('img/bg.jpg');
 }
 
 .reset {
@@ -96,13 +96,13 @@ body {
 }
 
 .rock {
-   background: url('/img/rock.png') -20px -15px/120% auto no-repeat;
+   background: url('img/rock.png') -20px -15px/120% auto no-repeat;
 }
 
 .paper {
-   background: url('/img/paper.png') -20px -15px/120% auto no-repeat;
+   background: url('img/paper.png') -20px -15px/120% auto no-repeat;
 }
 
 .scissors {
-   background: url('/img/scissors.png') -20px -15px/120% auto no-repeat;
+   background: url('img/scissors.png') -20px -15px/120% auto no-repeat;
 }
