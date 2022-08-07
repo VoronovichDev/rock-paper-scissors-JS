@@ -17,70 +17,73 @@ function getComputerChoice() {
    return res
 }
 
+
+
 let result = [];
 
 function playRound(playerSelection, computerSelection) {
-
    let winAmount
    let loseAmount
    let humanStep = playerSelection.toLowerCase();
    let robotStep = computerSelection
 
+   updateState = () => {
+      winAmount = result.filter(r => r === "win").length
+      loseAmount = result.filter(r => r === "lose").length
+   }
+   showScore = (w, l) => {
+      score.innerHTML = `You - ${w}:${l} - Computer `
+   }
+   showRoundResult = (resultOfRound) => {
+      if (resultOfRound == 'Draw') {
+         step.innerHTML = `${resultOfRound}! You and Computer chose: ${humanStep}`
+      } else {
+         step.innerHTML = `You ${resultOfRound}! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      }
+   }
+
+
    if (humanStep === 'rock' && robotStep === 'paper') {
-      step.innerHTML = `You lost! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      showRoundResult('lost')
       result.push('lose')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+      updateState()
+      showScore(winAmount, loseAmount)
 
-   } else if (humanStep === 'rock' && robotStep === 'scissors') {
-      step.innerHTML = `You won! Computer chose: ${robotStep}, you chose: ${humanStep}`
+   }
+   else if (humanStep === 'rock' && robotStep === 'scissors') {
+      showRoundResult('won')
       result.push('win')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
-
-   } else if (humanStep === 'paper' && robotStep === 'rock') {
-      step.innerHTML = `You won! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      updateState()
+      showScore(winAmount, loseAmount)
+   }
+   else if (humanStep === 'paper' && robotStep === 'rock') {
+      showRoundResult('won')
       result.push('win')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
-
-   } else if (humanStep === 'paper' && robotStep === 'scissors') {
-      step.innerHTML = `You lost! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      updateState()
+      showScore(winAmount, loseAmount)
+   }
+   else if (humanStep === 'paper' && robotStep === 'scissors') {
+      showRoundResult('lost')
       result.push('lose')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
-
-   } else if (humanStep === 'scissors' && robotStep === 'rock') {
-      step.innerHTML = `You lost! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      updateState()
+      showScore(winAmount, loseAmount)
+   }
+   else if (humanStep === 'scissors' && robotStep === 'rock') {
+      showRoundResult('lost')
       result.push('lose')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
-
-   } else if (humanStep === 'scissors' && robotStep === 'paper') {
-      step.innerHTML = `You won! Computer chose: ${robotStep}, you chose: ${humanStep}`
+      updateState()
+      showScore(winAmount, loseAmount)
+   }
+   else if (humanStep === 'scissors' && robotStep === 'paper') {
+      showRoundResult('won')
       result.push('win')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
-
-   } else if (humanStep === robotStep) {
-      step.innerHTML = `Draw! You and Computer chose: ${humanStep}`
-      result.push('win', 'lose')
-      console.log(result)
-      winAmount = result.filter(r => r === "win").length
-      loseAmount = result.filter(r => r === "lose").length
-      score.innerHTML = `You - ${winAmount}:${loseAmount} - Computer `
+      updateState()
+      showScore(winAmount, loseAmount)
+   }
+   else if (humanStep === robotStep) {
+      showRoundResult('Draw')
+      updateState()
+      showScore(winAmount, loseAmount)
    }
 
    if (winAmount === 5) {
@@ -105,13 +108,11 @@ function playRound(playerSelection, computerSelection) {
 resetBtn.addEventListener('click', startNewGame)
 function startNewGame() {
    result = []
-   winAmount = result.filter(r => r === "win").length
-   loseAmount = result.filter(r => r === "lose").length
+   updateState()
    resetBtn.classList.toggle("reset")
    finalResult.innerHTML = ''
    step.innerHTML = ''
    score.innerHTML = ''
    let arr = Array.from(buttons.children)
    arr.forEach(b => b.disabled = false)
-
 }
